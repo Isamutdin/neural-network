@@ -3,8 +3,10 @@ from base import *
 from math import exp
 
 
-w1 = Array([Array([0.3, 0.3, 0]), Array([0.4, -0.5, 1])])
-w2 = Array([-0.23, 0.234])
+# w1 = Array([Array([random.uniform(-1, 1) for i in range(3)]), Array([random.uniform(-1, 1) for i in range(3)])])
+# w2 = Array([random.uniform(-1, 1) for i in range(2)])
+w1 = Array([Array([-0.4713077680901974, -0.8613628697696606, -0.47935405618425736]), Array([0.7296388758326728, -0.42449346994609666, -0.6340773148740155])])
+w2 = Array([-0.72593973505337, 0.2902096929255349])
 inputs = [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1]]
 answers = [0.5, 0.5288502407442349, 0.4754071298293779, 0.5060018135126263, 0.5030306057986934, 0.528436950718212, 0.4786834921663368, 0.5081609247363897]
 
@@ -21,8 +23,8 @@ def go(w1, w2, el):
 
 
 def train(W1, W2, inputs, answers):
-    lmd = 0.01
-    N = 30000
+    lmd = 0.00001 #нужно научиться подбирать этот параметр
+    N = 100_000
     l_sample = 8
     for n in range(N):
         i = random.randint(0, l_sample-1)
@@ -41,7 +43,12 @@ def train(W1, W2, inputs, answers):
 
 
 
-train(w1, w2, inputs, answers)
+# train(w1, w2, inputs, answers)
 print(w1, w2)
-# for el in inputs:
-#     print(go(w1, w2, el)[0], end=', ')
+for el in inputs:
+    print(go(w1, w2, el)[0], end=', ')
+
+
+"""
+right answers -> [[0.3, 0.3, 0.0], [0.4, -0.5, 1.0]] [-0.5, 0.5]
+"""

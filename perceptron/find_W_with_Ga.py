@@ -30,12 +30,12 @@ def go(w11):
         sum_end = dot([-1, 1], sum_hidden)
         mistake += answers[i]-sum_end
     
-    if -mistake > 0: return -10**6
-    return -(mistake)
+    
+    return abs(mistake)
 
 
 
-Fitness.weight = 1 #Указываем будет ли ГА искать максимум или минимум (-1 миниму, а 1 максимум)
+Fitness.weight = -1 #Указываем будет ли ГА искать максимум или минимум (-1 миниму, а 1 максимум)
 
 creator_gen = partial(generate_gen)
 
