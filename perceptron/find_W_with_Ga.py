@@ -28,13 +28,14 @@ def go(w11):
     for i in range(len(inputs)):
         sum_hidden = dot([[0.3, 0.3, 0], w11], inputs[i])
         sum_end = dot([-1, 1], sum_hidden)
-        mistake += sum_end
-    if mistake > 1.2: return 10**6
+        mistake += answers[i]-sum_end
+    
+    if -mistake > 0: return -10**6
     return -(mistake)
 
 
 
-Fitness.weight = -1 #Указываем будет ли ГА искать максимум или минимум (-1 миниму, а 1 максимум)
+Fitness.weight = 1 #Указываем будет ли ГА искать максимум или минимум (-1 миниму, а 1 максимум)
 
 creator_gen = partial(generate_gen)
 
@@ -48,7 +49,7 @@ for ind in population:
     getattr(ind, 'fitness').setValue(go(ind))
 
 select =  partial(tournamentSel, tournsize=3)
-crossover = partial(crossSimulatedBinary, eta=15)
+crossover = partial(crossBlend, alpha=0.5)
 mutation = lambda x: x
 
 a = Statistic(lambda x: x)

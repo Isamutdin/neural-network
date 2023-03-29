@@ -1,6 +1,46 @@
-import numpy as np
 from math import exp
 
+class Array(list):
+
+    #Сложение#######################################################################################
+    def __add__(self, other):
+        result = Array()
+        term = other if isinstance(other, (tuple, list)) else [other for i in range(len(self))]
+        for n in range(len(self)):
+            result.append(self[n]+term[n])
+        return result
+
+    def __radd__(self, other):
+        return self.__add__(other)
+    ###############################################################################################
+
+    #Вычитание#####################################################################################
+    def __sub__(self, other):
+        result = Array()
+        other = other if isinstance(other, (tuple, list)) else [other for i in range(len(self))]
+        for n in range(len(self)):
+            result.append(self[n]-other[n])
+        return result
+
+    def __rsub__(self, other): 
+        result = Array()
+        other = other if isinstance(other, (tuple, list)) else [other for i in range(len(self))]
+        for n in range(len(self)):
+            result.append(other[n]-self[n])
+        return result
+    ###############################################################################################
+
+    #Умножение#####################################################################################
+    def __mul__(self, other):
+        result = Array()
+        other = other if isinstance(other, (tuple, list)) else [other for i in range(len(self))]
+        for n in range(len(self)):
+            result.append(other[n]*self[n])
+        return result
+
+    def __rmul__(self, other):
+        return self.__mul__(other)
+    ###############################################################################################
 
 def mul_vectors(a, b) -> int:
     l = len(a)
