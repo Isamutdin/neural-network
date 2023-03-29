@@ -1,4 +1,5 @@
 from base import *
+import numpy as np
 
 def test_base():
     a = ([[1, 1, -1.5], [1, 1, -0.5]])
