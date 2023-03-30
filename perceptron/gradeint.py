@@ -25,7 +25,7 @@ def go(w1, w2, el):
 def train(W1, W2, inputs, answers):
     lmd = 0.00001 #нужно научиться подбирать этот параметр
     N = 100_000
-    l_sample = 8
+    l_sample = len(answers )
     for n in range(N):
         i = random.randint(0, l_sample-1)
         el = inputs[i]
@@ -33,8 +33,8 @@ def train(W1, W2, inputs, answers):
         y, out = go(W1, W2, el)
         e = y - an
         delta = e*y*(1-y)
-        for k in range(len(out)):#корректировка весов на втором слое
-            W2[k] = W2[k] - lmd*delta*out[k]
+        
+        W2 = W2 - lmd*delta*out
 
         delta_back = W2*delta*y*(1-y)
         for k in range(len(delta_back)):
@@ -44,11 +44,13 @@ def train(W1, W2, inputs, answers):
 
 
 # train(w1, w2, inputs, answers)
-print(w1, w2)
-for el in inputs:
-    print(go(w1, w2, el)[0], end=', ')
+# print(w1, w2)
+# for el in inputs:
+#     print(go(w1, w2, el)[0], end=', ')
 
-
+print(type(w1[0]))
 """
 right answers -> [[0.3, 0.3, 0.0], [0.4, -0.5, 1.0]] [-0.5, 0.5]
+
+при 100_000 -> 
 """

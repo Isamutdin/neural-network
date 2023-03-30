@@ -13,3 +13,7 @@ def test_base():
 
 
 test_base()
+
+a = np.array([[1, 1, -1.5], [1, 1, -0.5]])
+
+print(type(a[0]))
