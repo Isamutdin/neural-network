@@ -13,8 +13,7 @@ class Array(list):
         term = other if isinstance(other, (tuple, list)) else [other for i in range(len(self))]
         for n in range(len(self)):
             result.append(self[n]+term[n])
-        return result
-
+        return result if len(result) > 1 else result[0]
     def __radd__(self, other):
         return self.__add__(other)
     ###############################################################################################
@@ -23,16 +22,17 @@ class Array(list):
     def __sub__(self, other):
         result = Array()
         other = other if isinstance(other, (tuple, list)) else [other for i in range(len(self))]
+        
         for n in range(len(self)):
             result.append(self[n]-other[n])
-        return result
+        return result if len(result) > 1 else result[0]
 
     def __rsub__(self, other): 
         result = Array()
         other = other if isinstance(other, (tuple, list)) else [other for i in range(len(self))]
         for n in range(len(self)):
             result.append(other[n]-self[n])
-        return result
+        return result if len(result) != 1 else result[0]
     ###############################################################################################
 
     #Умножение#####################################################################################
@@ -41,7 +41,7 @@ class Array(list):
         other = other if isinstance(other, (tuple, list)) else [other for i in range(len(self))]
         for n in range(len(self)):
             result.append(other[n]*self[n])
-        return result
+        return result if len(result) != 1 else result[0]
 
     def __rmul__(self, other):
         return self.__mul__(other)
@@ -89,6 +89,11 @@ def mul_matrix_vector(a, b) -> list:#Неккоректно работает
 def hyperbolic_tangent(x):
     return (exp(2*x)-1)/(exp(2*x)+1)
 
+def sigmoid(x):
+    return 1/(1 + exp(-x))
+
+def dsigmoid(x):
+    return (x*(1-x))
 
 def dot(a: list, b: list):
     mul = {

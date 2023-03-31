@@ -15,16 +15,18 @@ def sigmoid(x):
     return 1/(1 + exp(-x))
 
 def go(w1, w2, el):
-    out1 = Array(dot(w1, el))
-    sum = [sigmoid(x) for x in out1]
-    out2 = dot(w2, sum)
-    y = sigmoid(out2)
+    sum1 = (dot(w1, el))
+    out1 = Array([sigmoid(x) for x in sum1])
+    sum = dot(w2, out1)
+    y = sigmoid(sum)
     return y, out1
+
+
 
 
 def train(W1, W2, inputs, answers):
     lmd = 0.0001 #нужно научиться подбирать этот параметр
-    N = 100_000
+    N = 1
     l_sample = len(answers )
     for n in range(N):
         i = random.randint(0, l_sample-1)
@@ -33,20 +35,20 @@ def train(W1, W2, inputs, answers):
         y, out = go(W1, W2, el)
         e = y - an
         delta = e*y*(1-y)
-        
         W2 = W2 - lmd*delta*out
 
         delta_back = W2*delta*y*(1-y)
+
         for k in range(len(delta_back)):
-            W1[k] = W1[k] - Array(inputs[i])*delta_back[k]*lmd
+            W1[k] = W1[k] - lmd*delta_back[k]*Array(inputs[i])
+            print(lmd*delta_back[k]*Array(inputs[i]))
 
 
 
-
-# train(w1, w2, inputs, answers)
+train(w1, w2, inputs, answers)
 # print(w1, w2)
-for el in inputs:
-    print(go(w1, w2, el)[0], end=', ')
+# for el in inputs:
+#     print(go(w1, w2, el)[0], end=', ')
 
 # print(type(w1[0]))
 """
