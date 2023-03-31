@@ -16,19 +16,27 @@ CHANCE_MUTATION_INDIVID = 0.0
 GENERATIONS = 100 #поколения
 CHANCE_MUTATION_GEN = 0.2
 
+w1 = Array([[-0.4713077680901974, -0.8613628697696606, -0.47935405618425736], [0.7296388758326728, -0.42449346994609666, -0.6340773148740155]])
+w2 = Array([-0.72593973505337, 0.2902096929255349])
+
 def generate_gen():#функция для генерации гена
     return random.uniform(-1, 1)
 
+def sigmoid(x):
+    return 1/(1 + exp(-x))
 
 def go(w11):
     inputs = [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1]]
-    answers = [0.0, 1.0, -0.8, 0.2, 0.10000000000000003, 1.0999999999999999, -0.7, 0.30000000000000004]
+    answers = [0.445748164537979, 0.45586021541185057, 0.47480069453322143, 0.4810587587894957, 0.47921909907641547, 0.48742161229055886, 0.503889178190285, 0.5048837487662141]
+
     
     mistake = 0
     for i in range(len(inputs)):
-        sum_hidden = dot([[0.3, 0.3, 0], w11], inputs[i])
-        sum_end = dot([-1, 1], sum_hidden)
-        mistake += answers[i]-sum_end
+        out = dot([[-0.4713077680901974, -0.8613628697696606, -0.47935405618425736], w11], inputs[i])
+        sum = [sigmoid(x) for x in out]
+        out2 = dot([-0.72593973505337, 0.2902096929255349], sum)
+        y = sigmoid(out2)
+        mistake += answers[i]-y
     
     
     return abs(mistake)
@@ -49,7 +57,7 @@ for ind in population:
     getattr(ind, 'fitness').setValue(go(ind))
 
 select =  partial(tournamentSel, tournsize=3)
-crossover = partial(crossBlend, alpha=0.5)
+crossover = partial(crossUniform)
 mutation = lambda x: x
 
 a = Statistic(lambda x: x)
@@ -63,31 +71,11 @@ print(max(population, key=attrgetter('fitness')), go(max(population, key=attrget
 """right answer
 (3.0; 2.0), (-2.805118; 3.131312), (-3.779310; -3.283186), (3.584458; -1.848126)
 """
-# print(int(2.5368596112684827e-14))
 
 
 
 
 
-def go():
-    w11 = [0.3, 0.3, 0]
-    w12 = [0.4, -0.5, 1]
-    inputs = [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1]]
-    answers = [0.0, 1.0, -0.8, 0.2, 0.10000000000000003, 1.0999999999999999, -0.7, 0.30000000000000004,]
-    
-    mistake = 0
-    for i in range(len(inputs)):
-        sum_hidden = dot([w11, w12], inputs[i])
-        sum_end = dot([-1, 1], sum_hidden)
-        mistake += sum_end
-        print(sum_end, end=', ')
-    print()
-    return mistake
-
-
-
-
-print(go())
 
 
 

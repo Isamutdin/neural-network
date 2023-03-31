@@ -16,5 +16,6 @@ pip-delete-this-directory.txt
 
 # Environments
 venv/
+.vscode/
 
 video.py

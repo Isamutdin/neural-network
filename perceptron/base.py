@@ -1,6 +1,11 @@
 from math import exp
 
 class Array(list):
+    def __init__(self, *args):
+        super().__init__(*args)
+        for i in range(len(self)):
+            if isinstance(self[i], list):
+                self[i] = Array(self[i])
 
     #Сложение#######################################################################################
     def __add__(self, other):
