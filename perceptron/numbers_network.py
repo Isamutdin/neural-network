@@ -11,7 +11,7 @@ class Network_Perceptorn:
         self.weights = weights
 
     def go(self, inputs, train=False):
-        outs = []
+        outs = [inputs]
 
         sum = dot(self.weights[0], inputs)
         for i in range(1, len(self.hiddens)+1):
@@ -30,23 +30,26 @@ class Network_Perceptorn:
             sample_out = answers[k]
             
             sum, outs = self.go(sample_in)
-            outs.append(sum)
-            for i in range(len(sum)):
-                e = sum - sample_out
-                delta = e*self.df(sum)
-                delta_next = Array([])
+            outs = outs[::-1]
+            
+            e = sum - sample_out
+            delta = e*self.df(sum)
+            for w in range(1, len(self.weights)):
+                self.weights[-w] = self.weights[-w] - lmd*delta*outs[w-1]
+                delta = self.weights[-w]*delta*self.df(Array(outs[w-1]))
+            
+            self.weights[0] = self.weights[0] - delta*lmd*sample_in
                 
-                for w in range(len(self.weights)):
-                    # very hard
-                    pass
 
-w1 = Array([[-0.4713077680901974, -0.8613628697696606, -0.47935405618425736], [-0.12964361811150527, -0.8286875079308464, 0.6323587287307706]])
-w2 = Array([-0.72593973505337, 0.2902096929255349])    
+
+w1 = Array([Array([random.uniform(-1, 1) for i in range(3)]), Array([random.uniform(-1, 1) for i in range(3)])])
+w2 = Array([random.uniform(-1, 1) for i in range(2)])    
 w = [w1, w2]
 inputs = [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1]]
-answers = [0.5, 0.5288502407442349, 0.4754071298293779, 0.5060018135126263, 0.5030306057986934, 0.528436950718212, 0.4786834921663368, 0.5081609247363897]
+answers = [0.5621765008857981, 0.5499964049315906, 0.5603433768168178, 0.5484841316723525, 0.5615677073606016, 0.5494716026435313, 0.5597248960786497, 0.5477080732029805]
 
 Perceptron = Network_Perceptorn(input_size=3, hiddens=[2], f=sigmoid, df = dsigmoid, weights=w)
-Perceptron.train(inputs, answers, 1, 0.01)
-# (Perceptron.go([0, 0, 0]))
-# print(Array([1]) - 1)
+Perceptron.train(inputs, answers, 100_000, 0.01)
+# for el in inputs:
+#     print(Perceptron.go(el))
+# print(Perceptron.weights)
